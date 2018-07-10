@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package messaging;
+
+import "user.proto";
+
+// AuthedProfile is a public user profile with authorization attached.
+message AuthedProfile {
+    Ident auth = 1;
+    Profile profile = 2;
+}
+
+// UserService is our user microservice.
+service UserService {
+    // CreateUser creates a user.
+    rpc CreateUser(Ident) returns (Profile) {}
+
+    // SetProfile updates a user's profile.
+    rpc SetProfile(AuthedProfile) returns (Profile) {}
+}

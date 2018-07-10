@@ -1,0 +1,26 @@
+// This is important.  proto3 has some major advantages you don't want to miss out on.
+syntax = "proto3";
+
+package messaging;
+
+// Ident is a message used to identify a user.  It should be used when a user needs
+// to log in or create an account.
+message Ident {
+    // username is the unique name of the user.
+    string username = 1;
+
+    // password is the user's password.
+    string password = 2;
+}
+
+// Profile is the set of public details about a user.
+message Profile {
+    // id is the user's unique ID.
+    string id = 1;
+
+    // email is the user's email address.
+    string email = 2;
+
+    // display_name is the user's name to show to other users.
+    string display_name = 3;
+}

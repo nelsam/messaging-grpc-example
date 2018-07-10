@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package messaging;
+
+import "user.proto";
+
+//Message is a message from one user to another
+message Message {
+    // id is the message's unique ID.
+    string id = 1;
+
+    // from is the user the message was sent from.
+    Profile from = 2;
+
+    // to is the user the message was sent to.
+    Profile to = 3;
+
+    // title is the message's title.
+    string title = 4;
+
+    // body is the message's body.
+    string body = 5;
+}
+
+// Thread is a sequence of messages from one user to another
+message Thread {
+    // id is the thread's unique ID.
+    string id = 1;
+
+    // messages is the list of messages in the thread.
+    repeated Message messages = 2;
+}

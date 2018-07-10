@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package messaging;
+
+import "user.proto";
+import "message.proto";
+
+// AuthedMessage is a combined authorization and message.
+message AuthedMessage {
+    Ident auth = 1;
+    Message message = 2;
+}
+
+// ThreadReply is a message to be added to a thread.
+message ThreadReply {
+    Ident auth = 1;
+    Thread thread = 2;
+    Message message = 3;
+}
+
+// MessageService is our message microservice.
+service MessageService {
+    // Send sends a new message to a user.
+    rpc Send(AuthedMessage) returns (Thread) {}
+
+    // Reply replies to a thread.
+    rpc Reply(ThreadReply) returns (Thread) {}
+
+
+    // Delete deletes a message.
+    rpc Delete(AuthedMessage) returns (Thread) {}
+}
