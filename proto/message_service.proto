@@ -7,13 +7,13 @@ import "message.proto";
 
 // AuthedMessage is a combined authorization and message.
 message AuthedMessage {
-    Ident auth = 1;
+    Auth auth = 1;
     Message message = 2;
 }
 
 // ThreadReply is a message to be added to a thread.
 message ThreadReply {
-    Ident auth = 1;
+    Auth auth = 1;
     Thread thread = 2;
     Message message = 3;
 }
@@ -25,7 +25,6 @@ service MessageService {
 
     // Reply replies to a thread.
     rpc Reply(ThreadReply) returns (Thread) {}
-
 
     // Delete deletes a message.
     rpc Delete(AuthedMessage) returns (Thread) {}

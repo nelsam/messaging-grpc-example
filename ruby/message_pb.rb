@@ -9,11 +9,11 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :id, :string, 1
     optional :from, :message, 2, "messaging.Profile"
     optional :to, :message, 3, "messaging.Profile"
-    optional :title, :string, 4
     optional :body, :string, 5
   end
   add_message "messaging.Thread" do
     optional :id, :string, 1
+    optional :title, :string, 3
     repeated :messages, :message, 2, "messaging.Message"
   end
 end

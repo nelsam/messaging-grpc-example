@@ -12,6 +12,124 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+// Auth is used to authorize actions on behalf of a user.  It can be a token or Ident.
+type Auth struct {
+	// Types that are valid to be assigned to Auth:
+	//	*Auth_Token
+	//	*Auth_Ident
+	Auth isAuth_Auth `protobuf_oneof:"auth"`
+}
+
+func (m *Auth) Reset()                    { *m = Auth{} }
+func (m *Auth) String() string            { return proto.CompactTextString(m) }
+func (*Auth) ProtoMessage()               {}
+func (*Auth) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{0} }
+
+type isAuth_Auth interface {
+	isAuth_Auth()
+}
+
+type Auth_Token struct {
+	Token string `protobuf:"bytes,1,opt,name=token,oneof"`
+}
+type Auth_Ident struct {
+	Ident *Ident `protobuf:"bytes,2,opt,name=ident,oneof"`
+}
+
+func (*Auth_Token) isAuth_Auth() {}
+func (*Auth_Ident) isAuth_Auth() {}
+
+func (m *Auth) GetAuth() isAuth_Auth {
+	if m != nil {
+		return m.Auth
+	}
+	return nil
+}
+
+func (m *Auth) GetToken() string {
+	if x, ok := m.GetAuth().(*Auth_Token); ok {
+		return x.Token
+	}
+	return ""
+}
+
+func (m *Auth) GetIdent() *Ident {
+	if x, ok := m.GetAuth().(*Auth_Ident); ok {
+		return x.Ident
+	}
+	return nil
+}
+
+// XXX_OneofFuncs is for the internal use of the proto package.
+func (*Auth) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
+	return _Auth_OneofMarshaler, _Auth_OneofUnmarshaler, _Auth_OneofSizer, []interface{}{
+		(*Auth_Token)(nil),
+		(*Auth_Ident)(nil),
+	}
+}
+
+func _Auth_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
+	m := msg.(*Auth)
+	// auth
+	switch x := m.Auth.(type) {
+	case *Auth_Token:
+		b.EncodeVarint(1<<3 | proto.WireBytes)
+		b.EncodeStringBytes(x.Token)
+	case *Auth_Ident:
+		b.EncodeVarint(2<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.Ident); err != nil {
+			return err
+		}
+	case nil:
+	default:
+		return fmt.Errorf("Auth.Auth has unexpected type %T", x)
+	}
+	return nil
+}
+
+func _Auth_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
+	m := msg.(*Auth)
+	switch tag {
+	case 1: // auth.token
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		x, err := b.DecodeStringBytes()
+		m.Auth = &Auth_Token{x}
+		return true, err
+	case 2: // auth.ident
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(Ident)
+		err := b.DecodeMessage(msg)
+		m.Auth = &Auth_Ident{msg}
+		return true, err
+	default:
+		return false, nil
+	}
+}
+
+func _Auth_OneofSizer(msg proto.Message) (n int) {
+	m := msg.(*Auth)
+	// auth
+	switch x := m.Auth.(type) {
+	case *Auth_Token:
+		n += proto.SizeVarint(1<<3 | proto.WireBytes)
+		n += proto.SizeVarint(uint64(len(x.Token)))
+		n += len(x.Token)
+	case *Auth_Ident:
+		s := proto.Size(x.Ident)
+		n += proto.SizeVarint(2<<3 | proto.WireBytes)
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case nil:
+	default:
+		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
+	}
+	return n
+}
+
 // Ident is a message used to identify a user.  It should be used when a user needs
 // to log in or create an account.
 type Ident struct {
@@ -24,7 +142,7 @@ type Ident struct {
 func (m *Ident) Reset()                    { *m = Ident{} }
 func (m *Ident) String() string            { return proto.CompactTextString(m) }
 func (*Ident) ProtoMessage()               {}
-func (*Ident) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{0} }
+func (*Ident) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{1} }
 
 func (m *Ident) GetUsername() string {
 	if m != nil {
@@ -44,8 +162,6 @@ func (m *Ident) GetPassword() string {
 type Profile struct {
 	// id is the user's unique ID.
 	Id string `protobuf:"bytes,1,opt,name=id" json:"id,omitempty"`
-	// email is the user's email address.
-	Email string `protobuf:"bytes,2,opt,name=email" json:"email,omitempty"`
 	// display_name is the user's name to show to other users.
 	DisplayName string `protobuf:"bytes,3,opt,name=display_name,json=displayName" json:"display_name,omitempty"`
 }
@@ -53,18 +169,11 @@ type Profile struct {
 func (m *Profile) Reset()                    { *m = Profile{} }
 func (m *Profile) String() string            { return proto.CompactTextString(m) }
 func (*Profile) ProtoMessage()               {}
-func (*Profile) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{1} }
+func (*Profile) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{2} }
 
 func (m *Profile) GetId() string {
 	if m != nil {
 		return m.Id
-	}
-	return ""
-}
-
-func (m *Profile) GetEmail() string {
-	if m != nil {
-		return m.Email
 	}
 	return ""
 }
@@ -77,22 +186,26 @@ func (m *Profile) GetDisplayName() string {
 }
 
 func init() {
+	proto.RegisterType((*Auth)(nil), "messaging.Auth")
 	proto.RegisterType((*Ident)(nil), "messaging.Ident")
 	proto.RegisterType((*Profile)(nil), "messaging.Profile")
 }
 
-func init() { proto.RegisterFile("user.proto", fileDescriptor2) }
+func init() { proto.RegisterFile("user.proto", fileDescriptor3) }
 
-var fileDescriptor2 = []byte{
-	// 154 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x2a, 0x2d, 0x4e, 0x2d,
-	0xd2, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0xcc, 0x4d, 0x2d, 0x2e, 0x4e, 0x4c, 0xcf, 0xcc,
-	0x4b, 0x57, 0xb2, 0xe7, 0x62, 0xf5, 0x4c, 0x49, 0xcd, 0x2b, 0x11, 0x92, 0xe2, 0xe2, 0x00, 0xa9,
-	0xc8, 0x4b, 0xcc, 0x4d, 0x95, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x82, 0xf3, 0x41, 0x72, 0x05,
-	0x89, 0xc5, 0xc5, 0xe5, 0xf9, 0x45, 0x29, 0x12, 0x4c, 0x10, 0x39, 0x18, 0x5f, 0x29, 0x88, 0x8b,
-	0x3d, 0xa0, 0x28, 0x3f, 0x2d, 0x33, 0x27, 0x55, 0x88, 0x8f, 0x8b, 0x29, 0x33, 0x05, 0xaa, 0x99,
-	0x29, 0x33, 0x45, 0x48, 0x84, 0x8b, 0x35, 0x35, 0x37, 0x31, 0x33, 0x07, 0xaa, 0x07, 0xc2, 0x11,
-	0x52, 0xe4, 0xe2, 0x49, 0xc9, 0x2c, 0x2e, 0xc8, 0x49, 0xac, 0x8c, 0x07, 0x5b, 0xc6, 0x0c, 0x96,
-	0xe4, 0x86, 0x8a, 0xf9, 0x25, 0xe6, 0xa6, 0x26, 0xb1, 0x81, 0x9d, 0x69, 0x0c, 0x08, 0x00, 0x00,
-	0xff, 0xff, 0x43, 0xa5, 0x38, 0xf1, 0xb4, 0x00, 0x00, 0x00,
+var fileDescriptor3 = []byte{
+	// 203 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x3c, 0x8f, 0xbb, 0x6e, 0x83, 0x30,
+	0x14, 0x86, 0x8b, 0xb9, 0x14, 0x0e, 0x55, 0x85, 0x3c, 0x54, 0xa8, 0x13, 0x65, 0x62, 0x62, 0x68,
+	0x1f, 0xa0, 0x2a, 0x53, 0x93, 0x21, 0x42, 0xbc, 0x40, 0xe4, 0xc8, 0x0e, 0x58, 0x01, 0x1b, 0xd9,
+	0x46, 0x51, 0xde, 0x3e, 0xb2, 0x41, 0x8c, 0xff, 0xed, 0x3b, 0x3a, 0x00, 0x8b, 0x66, 0xaa, 0x9e,
+	0x95, 0x34, 0x12, 0x27, 0x13, 0xd3, 0x9a, 0xf4, 0x5c, 0xf4, 0x65, 0x0b, 0xc1, 0xdf, 0x62, 0x06,
+	0xfc, 0x01, 0xa1, 0x91, 0x37, 0x26, 0x72, 0xaf, 0xf0, 0xaa, 0xe4, 0xff, 0xa5, 0x5b, 0x25, 0xae,
+	0x20, 0xe4, 0x94, 0x09, 0x93, 0xa3, 0xc2, 0xab, 0xd2, 0xef, 0xac, 0xde, 0xa7, 0xf5, 0xc1, 0xfa,
+	0xb6, 0xe9, 0x0a, 0x4d, 0x04, 0x01, 0x59, 0xcc, 0x50, 0xfe, 0x42, 0xe8, 0x12, 0xfc, 0x09, 0xb1,
+	0xbd, 0x29, 0xc8, 0xc4, 0x56, 0x6a, 0xb7, 0x6b, 0x9b, 0xcd, 0x44, 0xeb, 0xbb, 0x54, 0xd4, 0x91,
+	0x93, 0x6e, 0xd7, 0x65, 0x03, 0xaf, 0xad, 0x92, 0x57, 0x3e, 0x32, 0xfc, 0x0e, 0x88, 0xd3, 0x6d,
+	0x8c, 0x38, 0xc5, 0x5f, 0xf0, 0x46, 0xb9, 0x9e, 0x47, 0xf2, 0x38, 0x3b, 0xac, 0xef, 0x92, 0x74,
+	0xf3, 0x4e, 0x64, 0x62, 0xc7, 0x20, 0x46, 0x99, 0x7f, 0x89, 0xdc, 0xa3, 0x3f, 0xcf, 0x00, 0x00,
+	0x00, 0xff, 0xff, 0x89, 0x1f, 0x17, 0x7b, 0xf6, 0x00, 0x00, 0x00,
 }

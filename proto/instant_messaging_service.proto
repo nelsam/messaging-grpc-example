@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package messaging;
+
+import "user.proto";
+import "message.proto";
+
+// ConnectAuth authorizes an instant message connection between two users.
+message ConnectAuth {
+    Auth auth = 1;
+    Profile from = 2;
+    Profile to = 3;
+}
+
+// AuthedIM is a message with authorization attached.
+message AuthedIM {
+    Auth auth = 1;
+    Message message = 2;
+}
+
+// InstantMessageService can give us access to real time messages!
+service InstantMessageService {
+    // Send sends a message to a user.  We don't use streaming here
+    // because grpc-web doesn't handle client-side streaming.
+    rpc Send(AuthedIM) returns (Message) {}
+
+    // Connect connects to an IM session with a user.
+    rpc Connect(ConnectAuth) returns (stream Message) {}
+}
+

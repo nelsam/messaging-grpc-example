@@ -7,11 +7,11 @@ require 'user_pb'
 require 'message_pb'
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_message "messaging.AuthedMessage" do
-    optional :auth, :message, 1, "messaging.Ident"
+    optional :auth, :message, 1, "messaging.Auth"
     optional :message, :message, 2, "messaging.Message"
   end
   add_message "messaging.ThreadReply" do
-    optional :auth, :message, 1, "messaging.Ident"
+    optional :auth, :message, 1, "messaging.Auth"
     optional :thread, :message, 2, "messaging.Thread"
     optional :message, :message, 3, "messaging.Message"
   end

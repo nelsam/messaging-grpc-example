@@ -4,18 +4,24 @@
 require 'google/protobuf'
 
 Google::Protobuf::DescriptorPool.generated_pool.build do
+  add_message "messaging.Auth" do
+    oneof :auth do
+      optional :token, :string, 1
+      optional :ident, :message, 2, "messaging.Ident"
+    end
+  end
   add_message "messaging.Ident" do
     optional :username, :string, 1
     optional :password, :string, 2
   end
   add_message "messaging.Profile" do
     optional :id, :string, 1
-    optional :email, :string, 2
     optional :display_name, :string, 3
   end
 end
 
 module Messaging
+  Auth = Google::Protobuf::DescriptorPool.generated_pool.lookup("messaging.Auth").msgclass
   Ident = Google::Protobuf::DescriptorPool.generated_pool.lookup("messaging.Ident").msgclass
   Profile = Google::Protobuf::DescriptorPool.generated_pool.lookup("messaging.Profile").msgclass
 end

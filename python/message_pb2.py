@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='message.proto',
   package='messaging',
   syntax='proto3',
-  serialized_pb=_b('\n\rmessage.proto\x12\tmessaging\x1a\nuser.proto\"t\n\x07Message\x12\n\n\x02id\x18\x01 \x01(\t\x12 \n\x04\x66rom\x18\x02 \x01(\x0b\x32\x12.messaging.Profile\x12\x1e\n\x02to\x18\x03 \x01(\x0b\x32\x12.messaging.Profile\x12\r\n\x05title\x18\x04 \x01(\t\x12\x0c\n\x04\x62ody\x18\x05 \x01(\t\":\n\x06Thread\x12\n\n\x02id\x18\x01 \x01(\t\x12$\n\x08messages\x18\x02 \x03(\x0b\x32\x12.messaging.Messageb\x06proto3')
+  serialized_pb=_b('\n\rmessage.proto\x12\tmessaging\x1a\nuser.proto\"k\n\x07Message\x12\n\n\x02id\x18\x01 \x01(\t\x12 \n\x04\x66rom\x18\x02 \x01(\x0b\x32\x12.messaging.Profile\x12\x1e\n\x02to\x18\x03 \x01(\x0b\x32\x12.messaging.Profile\x12\x0c\n\x04\x62ody\x18\x05 \x01(\tJ\x04\x08\x04\x10\x05\"I\n\x06Thread\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05title\x18\x03 \x01(\t\x12$\n\x08messages\x18\x02 \x03(\x0b\x32\x12.messaging.Messageb\x06proto3')
   ,
   dependencies=[user__pb2.DESCRIPTOR,])
 
@@ -56,14 +56,7 @@ _MESSAGE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='title', full_name='messaging.Message.title', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='body', full_name='messaging.Message.body', index=4,
+      name='body', full_name='messaging.Message.body', index=3,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -82,7 +75,7 @@ _MESSAGE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=40,
-  serialized_end=156,
+  serialized_end=147,
 )
 
 
@@ -101,7 +94,14 @@ _THREAD = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='messages', full_name='messaging.Thread.messages', index=1,
+      name='title', full_name='messaging.Thread.title', index=1,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='messages', full_name='messaging.Thread.messages', index=2,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -119,8 +119,8 @@ _THREAD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=158,
-  serialized_end=216,
+  serialized_start=149,
+  serialized_end=222,
 )
 
 _MESSAGE.fields_by_name['from'].message_type = user__pb2._PROFILE

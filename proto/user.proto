@@ -3,6 +3,19 @@ syntax = "proto3";
 
 package messaging;
 
+// Auth is used to authorize actions on behalf of a user.  It can be a token or Ident.
+message Auth {
+    oneof auth {
+        // token is the preferred method for authorization for
+        // most things.
+        string token = 1;
+
+        // ident is a username and password for identifying
+        // directly against credentials on the server.
+        Ident ident = 2;
+    }
+}
+
 // Ident is a message used to identify a user.  It should be used when a user needs
 // to log in or create an account.
 message Ident {
@@ -15,11 +28,11 @@ message Ident {
 
 // Profile is the set of public details about a user.
 message Profile {
+    // 2 used to be email, which we stopped exposing on user profiles.
+    reserved 2;
+
     // id is the user's unique ID.
     string id = 1;
-
-    // email is the user's email address.
-    string email = 2;
 
     // display_name is the user's name to show to other users.
     string display_name = 3;

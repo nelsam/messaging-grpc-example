@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='user_service.proto',
   package='messaging',
   syntax='proto3',
-  serialized_pb=_b('\n\x12user_service.proto\x12\tmessaging\x1a\nuser.proto\"T\n\rAuthedProfile\x12\x1e\n\x04\x61uth\x18\x01 \x01(\x0b\x32\x10.messaging.Ident\x12#\n\x07profile\x18\x02 \x01(\x0b\x32\x12.messaging.Profile2\x81\x01\n\x0bUserService\x12\x34\n\nCreateUser\x12\x10.messaging.Ident\x1a\x12.messaging.Profile\"\x00\x12<\n\nSetProfile\x12\x18.messaging.AuthedProfile\x1a\x12.messaging.Profile\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x12user_service.proto\x12\tmessaging\x1a\nuser.proto\"S\n\rAuthedProfile\x12\x1d\n\x04\x61uth\x18\x01 \x01(\x0b\x32\x0f.messaging.Auth\x12#\n\x07profile\x18\x02 \x01(\x0b\x32\x12.messaging.Profile2\x81\x01\n\x0bUserService\x12\x34\n\nCreateUser\x12\x10.messaging.Ident\x1a\x12.messaging.Profile\"\x00\x12<\n\nSetProfile\x12\x18.messaging.AuthedProfile\x1a\x12.messaging.Profile\"\x00\x62\x06proto3')
   ,
   dependencies=[user__pb2.DESCRIPTOR,])
 
@@ -61,10 +61,10 @@ _AUTHEDPROFILE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=45,
-  serialized_end=129,
+  serialized_end=128,
 )
 
-_AUTHEDPROFILE.fields_by_name['auth'].message_type = user__pb2._IDENT
+_AUTHEDPROFILE.fields_by_name['auth'].message_type = user__pb2._AUTH
 _AUTHEDPROFILE.fields_by_name['profile'].message_type = user__pb2._PROFILE
 DESCRIPTOR.message_types_by_name['AuthedProfile'] = _AUTHEDPROFILE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -84,8 +84,8 @@ _USERSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   options=None,
-  serialized_start=132,
-  serialized_end=261,
+  serialized_start=131,
+  serialized_end=260,
   methods=[
   _descriptor.MethodDescriptor(
     name='CreateUser',

@@ -3,6 +3,15 @@
 
 ## Table of Contents
 
+- [instant_messaging_service.proto](#instant_messaging_service.proto)
+    - [AuthedIM](#messaging.AuthedIM)
+    - [ConnectAuth](#messaging.ConnectAuth)
+  
+  
+  
+    - [InstantMessageService](#messaging.InstantMessageService)
+  
+
 - [message.proto](#message.proto)
     - [Message](#messaging.Message)
     - [Thread](#messaging.Thread)
@@ -21,6 +30,7 @@
   
 
 - [user.proto](#user.proto)
+    - [Auth](#messaging.Auth)
     - [Ident](#messaging.Ident)
     - [Profile](#messaging.Profile)
   
@@ -37,6 +47,66 @@
   
 
 - [Scalar Value Types](#scalar-value-types)
+
+
+
+<a name="instant_messaging_service.proto"/>
+<p align="right"><a href="#top">Top</a></p>
+
+## instant_messaging_service.proto
+
+
+
+<a name="messaging.AuthedIM"/>
+
+### AuthedIM
+AuthedIM is a message with authorization attached.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| auth | [Auth](#messaging.Auth) |  |  |
+| message | [Message](#messaging.Message) |  |  |
+
+
+
+
+
+
+<a name="messaging.ConnectAuth"/>
+
+### ConnectAuth
+ConnectAuth authorizes an instant message connection between two users.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| auth | [Auth](#messaging.Auth) |  |  |
+| from | [Profile](#messaging.Profile) |  |  |
+| to | [Profile](#messaging.Profile) |  |  |
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+
+<a name="messaging.InstantMessageService"/>
+
+### InstantMessageService
+InstantMessageService can give us access to real time messages!
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| Send | [AuthedIM](#messaging.AuthedIM) | [Message](#messaging.AuthedIM) | Send sends a message to a user. We don&#39;t use streaming here because grpc-web doesn&#39;t handle client-side streaming. |
+| Connect | [ConnectAuth](#messaging.ConnectAuth) | [Message](#messaging.ConnectAuth) | Connect connects to an IM session with a user. |
+
+ 
 
 
 
@@ -58,7 +128,6 @@ Message is a message from one user to another
 | id | [string](#string) |  | id is the message&#39;s unique ID. |
 | from | [Profile](#messaging.Profile) |  | from is the user the message was sent from. |
 | to | [Profile](#messaging.Profile) |  | to is the user the message was sent to. |
-| title | [string](#string) |  | title is the message&#39;s title. |
 | body | [string](#string) |  | body is the message&#39;s body. |
 
 
@@ -75,6 +144,7 @@ Thread is a sequence of messages from one user to another
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [string](#string) |  | id is the thread&#39;s unique ID. |
+| title | [string](#string) |  | title is the message&#39;s title. |
 | messages | [Message](#messaging.Message) | repeated | messages is the list of messages in the thread. |
 
 
@@ -106,7 +176,7 @@ AuthedMessage is a combined authorization and message.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| auth | [Ident](#messaging.Ident) |  |  |
+| auth | [Auth](#messaging.Auth) |  |  |
 | message | [Message](#messaging.Message) |  |  |
 
 
@@ -122,7 +192,7 @@ ThreadReply is a message to be added to a thread.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| auth | [Ident](#messaging.Ident) |  |  |
+| auth | [Auth](#messaging.Auth) |  |  |
 | thread | [Thread](#messaging.Thread) |  |  |
 | message | [Message](#messaging.Message) |  |  |
 
@@ -159,6 +229,22 @@ MessageService is our message microservice.
 This is important.  proto3 has some major advantages you don&#39;t want to miss out on.
 
 
+<a name="messaging.Auth"/>
+
+### Auth
+Auth is used to authorize actions on behalf of a user.  It can be a token or Ident.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| token | [string](#string) |  | token is the preferred method for authorization for most things. |
+| ident | [Ident](#messaging.Ident) |  | ident is a username and password for identifying directly against credentials on the server. |
+
+
+
+
+
+
 <a name="messaging.Ident"/>
 
 ### Ident
@@ -185,7 +271,6 @@ Profile is the set of public details about a user.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [string](#string) |  | id is the user&#39;s unique ID. |
-| email | [string](#string) |  | email is the user&#39;s email address. |
 | display_name | [string](#string) |  | display_name is the user&#39;s name to show to other users. |
 
 
@@ -217,7 +302,7 @@ AuthedProfile is a public user profile with authorization attached.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| auth | [Ident](#messaging.Ident) |  |  |
+| auth | [Auth](#messaging.Auth) |  |  |
 | profile | [Profile](#messaging.Profile) |  |  |
 
 

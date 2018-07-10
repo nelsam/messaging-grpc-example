@@ -19,10 +19,51 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='user.proto',
   package='messaging',
   syntax='proto3',
-  serialized_pb=_b('\n\nuser.proto\x12\tmessaging\"+\n\x05Ident\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\":\n\x07Profile\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x03 \x01(\tb\x06proto3')
+  serialized_pb=_b('\n\nuser.proto\x12\tmessaging\"B\n\x04\x41uth\x12\x0f\n\x05token\x18\x01 \x01(\tH\x00\x12!\n\x05ident\x18\x02 \x01(\x0b\x32\x10.messaging.IdentH\x00\x42\x06\n\x04\x61uth\"+\n\x05Ident\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"1\n\x07Profile\x12\n\n\x02id\x18\x01 \x01(\t\x12\x14\n\x0c\x64isplay_name\x18\x03 \x01(\tJ\x04\x08\x02\x10\x03\x62\x06proto3')
 )
 
 
+
+
+_AUTH = _descriptor.Descriptor(
+  name='Auth',
+  full_name='messaging.Auth',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='token', full_name='messaging.Auth.token', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='ident', full_name='messaging.Auth.ident', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='auth', full_name='messaging.Auth.auth',
+      index=0, containing_type=None, fields=[]),
+  ],
+  serialized_start=25,
+  serialized_end=91,
+)
 
 
 _IDENT = _descriptor.Descriptor(
@@ -58,8 +99,8 @@ _IDENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=25,
-  serialized_end=68,
+  serialized_start=93,
+  serialized_end=136,
 )
 
 
@@ -78,14 +119,7 @@ _PROFILE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='email', full_name='messaging.Profile.email', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='display_name', full_name='messaging.Profile.display_name', index=2,
+      name='display_name', full_name='messaging.Profile.display_name', index=1,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -103,13 +137,28 @@ _PROFILE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=70,
-  serialized_end=128,
+  serialized_start=138,
+  serialized_end=187,
 )
 
+_AUTH.fields_by_name['ident'].message_type = _IDENT
+_AUTH.oneofs_by_name['auth'].fields.append(
+  _AUTH.fields_by_name['token'])
+_AUTH.fields_by_name['token'].containing_oneof = _AUTH.oneofs_by_name['auth']
+_AUTH.oneofs_by_name['auth'].fields.append(
+  _AUTH.fields_by_name['ident'])
+_AUTH.fields_by_name['ident'].containing_oneof = _AUTH.oneofs_by_name['auth']
+DESCRIPTOR.message_types_by_name['Auth'] = _AUTH
 DESCRIPTOR.message_types_by_name['Ident'] = _IDENT
 DESCRIPTOR.message_types_by_name['Profile'] = _PROFILE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+Auth = _reflection.GeneratedProtocolMessageType('Auth', (_message.Message,), dict(
+  DESCRIPTOR = _AUTH,
+  __module__ = 'user_pb2'
+  # @@protoc_insertion_point(class_scope:messaging.Auth)
+  ))
+_sym_db.RegisterMessage(Auth)
 
 Ident = _reflection.GeneratedProtocolMessageType('Ident', (_message.Message,), dict(
   DESCRIPTOR = _IDENT,

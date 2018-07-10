@@ -6,7 +6,7 @@ require 'google/protobuf'
 require 'user_pb'
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_message "messaging.AuthedProfile" do
-    optional :auth, :message, 1, "messaging.Ident"
+    optional :auth, :message, 1, "messaging.Auth"
     optional :profile, :message, 2, "messaging.Profile"
   end
 end
